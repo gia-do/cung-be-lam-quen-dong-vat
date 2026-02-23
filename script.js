@@ -94,9 +94,13 @@ document.getElementById("celebrateButton").addEventListener("click", () => {
   });
 });
 
-speechSynthesis.onvoiceschanged = () => {
+// ✅ Put this at the very bottom of script.js
+function listVoices() {
   const voices = speechSynthesis.getVoices();
   voices.forEach((voice, i) => {
     console.log(i + ": " + voice.name + " (" + voice.lang + ")");
   });
-};
+}
+
+// Voices may load asynchronously
+speechSynthesis.onvoiceschanged = listVoices;
