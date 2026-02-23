@@ -29,7 +29,7 @@ async function getVietnameseTTS(text) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         input: { text: text },
-        voice: { languageCode: "vi-VN", name: "vi-VN-Wavenet-F" },
+        voice: { languageCode: "vi-VN"},
         audioConfig: { audioEncoding: "MP3" }
       })
     }
