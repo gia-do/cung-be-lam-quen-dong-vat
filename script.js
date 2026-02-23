@@ -2,14 +2,14 @@ const diceElements = document.querySelectorAll(".die");
 const resultDisplay = document.getElementById("result");
 
 // Động vật bằng tiếng Việt
-const animals = ["Tôm", "Cua", "Cá", "Lợn", "Gà", "Hươu sao"];
+const animals = ["Tôm", "Cua", "Cá", "Lợn", "Gà", "Hươu"];
 const animalEmojis = {
   Tôm: "🦐",
   Cua: "🦀",
   Cá: "🐟",
   Lợn: "🐖",
   Gà: "🐓",
-  Hươu sao: "🦒"
+  Hươu: "🦒"
 };
 const animalColors = {
   Tôm: ['#ff69b4', '#ffb6c1'],
@@ -17,7 +17,7 @@ const animalColors = {
   Cá: ['#1e90ff', '#00ced1'],
   Lợn: ['#ffc0cb', '#ff69b4'],
   Gà: ['#ffff00', '#ffd700'],
-  Hươu sao: ['#daa520', '#f4a460']
+  Hươu: ['#daa520', '#f4a460']
 };
 
 function rollDie() {
