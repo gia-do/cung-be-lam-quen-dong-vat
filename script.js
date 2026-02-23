@@ -2,14 +2,14 @@ const diceElements = document.querySelectorAll(".die");
 const resultDisplay = document.getElementById("result");
 
 // Động vật bằng tiếng Việt
-const animals = ["Tôm", "Cua", "Cá", "Lợn", "Gà", "Hươu"];
+const animals = ["Tôm", "Cua", "Cá", "Lợn", "Gà", "Hươu sao"];
 const animalEmojis = {
   Tôm: "🦐",
   Cua: "🦀",
   Cá: "🐟",
   Lợn: "🐖",
   Gà: "🐓",
-  Hươu: "🦒"
+  Hươu sao: "🦒"
 };
 const animalColors = {
   Tôm: ['#ff69b4', '#ffb6c1'],
@@ -17,48 +17,34 @@ const animalColors = {
   Cá: ['#1e90ff', '#00ced1'],
   Lợn: ['#ffc0cb', '#ff69b4'],
   Gà: ['#ffff00', '#ffd700'],
-  Hươu: ['#daa520', '#f4a460']
+  Hươu sao: ['#daa520', '#f4a460']
 };
 
-// ✅ Google Cloud TTS with Promise
+// ✅ Google Cloud TTS
 async function getVietnameseTTS(text) {
-  return new Promise(async (resolve) => {
-    try {
-      const response = await fetch(
-        "https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyAYGCAQcHUS5TmnOXXzWqq11MtbtevceCY",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            input: { text: text },
-            voice: { languageCode: "vi-VN", name: "vi-VN-Standard-A" },
-            audioConfig: { audioEncoding: "MP3" }
-          })
-        }
-      );
-
-      const data = await response.json();
-      if (data.audioContent) {
-        const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
-        audio.onended = () => {
-          setTimeout(resolve, 700); // short pause after each voice
-        };
-        audio.play();
-      } else {
-        console.error("TTS error:", data);
-        resolve();
+  try {
+    const response = await fetch(
+      "https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyAYGCAQcHUS5TmnOXXzWqq11MtbtevceCY",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          input: { text: text },
+          voice: { languageCode: "vi-VN", name: "vi-VN-Standard-A" },
+          audioConfig: { audioEncoding: "MP3" }
+        })
       }
-    } catch (err) {
-      console.error("Fetch error:", err);
-      resolve();
-    }
-  });
-}
+    );
 
-// ✅ Speak a list sequentially with pauses
-async function speakSequentially(texts) {
-  for (const text of texts) {
-    await getVietnameseTTS(text);
+    const data = await response.json();
+    if (data.audioContent) {
+      const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
+      audio.play();
+    } else {
+      console.error("TTS error:", data);
+    }
+  } catch (err) {
+    console.error("Fetch error:", err);
   }
 }
 
@@ -82,6 +68,10 @@ function launchMultiConfetti(animalsRolled) {
 
 // Nút Xóc
 document.getElementById("rollButton").addEventListener("click", () => {
+  // ✅ Play music when rolling
+  const music = new Audio("music.mp3");
+  music.play();
+
   diceElements.forEach(die => {
     die.textContent = "🎲";
     die.classList.add("rolling");
@@ -95,25 +85,27 @@ document.getElementById("rollButton").addEventListener("click", () => {
       rolledAnimals.push(animal);
       die.classList.remove("rolling");
     });
-    resultDisplay.textContent = "Kết quả: " + rolledAnimals.join(", ");
+
+    // ✅ Join results into one sentence
+    const sentence = "[" + rolledAnimals.join(", ") + "]";
+    resultDisplay.textContent = "Kết quả: " + sentence;
     launchMultiConfetti(rolledAnimals);
 
-    // ✅ Speak results one by one with pauses
-    await speakSequentially(rolledAnimals);
+    // ✅ Speak the whole sentence
+    await getVietnameseTTS(sentence);
   }, 6000);
 });
 
 // Nút Chúc mừng
-document.getElementById("celebrateButton").addEventListener("click", async () => {
+document.getElementById("celebrateButton").addEventListener("click", () => {
   const listText = document.getElementById("congratsList").value;
   const congratulationsList = listText.split("\n").filter(line => line.trim() !== "");
   const randomIndex = Math.floor(Math.random() * congratulationsList.length);
   const message = congratulationsList[randomIndex];
-  await getVietnameseTTS(message); // ✅ single message
+  getVietnameseTTS(message); // single message only
   confetti({
     particleCount: 100,
     spread: 70,
     origin: { y: 0.6 }
   });
 });
-
