@@ -20,27 +20,45 @@ const animalColors = {
   Hươu: ['#daa520', '#f4a460']
 };
 
-// ✅ Google Cloud TTS function
+// ✅ Google Cloud TTS with Promise
 async function getVietnameseTTS(text) {
-  const response = await fetch(
-    "https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyAYGCAQcHUS5TmnOXXzWqq11MtbtevceCY",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        input: { text: text },
-        voice: { languageCode: "vi-VN"},
-        audioConfig: { audioEncoding: "MP3" }
-      })
-    }
-  );
+  return new Promise(async (resolve) => {
+    try {
+      const response = await fetch(
+        "https://texttospeech.googleapis.com/v1/text:synthesize?key=XYZ",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            input: { text: text },
+            voice: { languageCode: "vi-VN", name: "vi-VN-Standard-A" },
+            audioConfig: { audioEncoding: "MP3" }
+          })
+        }
+      );
 
-  const data = await response.json();
-  if (data.audioContent) {
-    const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
-    audio.play();
-  } else {
-    console.error("TTS error:", data);
+      const data = await response.json();
+      if (data.audioContent) {
+        const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
+        audio.onended = () => {
+          setTimeout(resolve, 700); // short pause after each voice
+        };
+        audio.play();
+      } else {
+        console.error("TTS error:", data);
+        resolve();
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+      resolve();
+    }
+  });
+}
+
+// ✅ Speak a list sequentially with pauses
+async function speakSequentially(texts) {
+  for (const text of texts) {
+    await getVietnameseTTS(text);
   }
 }
 
@@ -69,30 +87,33 @@ document.getElementById("rollButton").addEventListener("click", () => {
     die.classList.add("rolling");
   });
 
-  setTimeout(() => {
+  setTimeout(async () => {
     const rolledAnimals = [];
     diceElements.forEach(die => {
       const animal = rollDie();
       die.textContent = getAnimalEmoji(animal);
       rolledAnimals.push(animal);
-      getVietnameseTTS(animal); // ✅ use Google Cloud TTS
       die.classList.remove("rolling");
     });
     resultDisplay.textContent = "Kết quả: " + rolledAnimals.join(", ");
     launchMultiConfetti(rolledAnimals);
+
+    // ✅ Speak results one by one with pauses
+    await speakSequentially(rolledAnimals);
   }, 6000);
 });
 
 // Nút Chúc mừng
-document.getElementById("celebrateButton").addEventListener("click", () => {
+document.getElementById("celebrateButton").addEventListener("click", async () => {
   const listText = document.getElementById("congratsList").value;
   const congratulationsList = listText.split("\n").filter(line => line.trim() !== "");
   const randomIndex = Math.floor(Math.random() * congratulationsList.length);
   const message = congratulationsList[randomIndex];
-  getVietnameseTTS(message); // ✅ use Google Cloud TTS
+  await getVietnameseTTS(message); // ✅ single message
   confetti({
     particleCount: 100,
     spread: 70,
     origin: { y: 0.6 }
   });
 });
+
