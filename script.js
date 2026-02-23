@@ -25,7 +25,7 @@ async function getVietnameseTTS(text) {
   return new Promise(async (resolve) => {
     try {
       const response = await fetch(
-        "https://texttospeech.googleapis.com/v1/text:synthesize?key=XYZ",
+        "https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyAYGCAQcHUS5TmnOXXzWqq11MtbtevceCY",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
