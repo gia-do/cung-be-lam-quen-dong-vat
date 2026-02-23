@@ -93,7 +93,7 @@ document.getElementById("rollButton").addEventListener("click", () => {
 
     // ✅ Speak the whole sentence
     await getVietnameseTTS(sentence);
-  }, 6000);
+  }, 7000);
 });
 
 // Nút Chúc mừng
