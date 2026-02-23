@@ -93,3 +93,10 @@ document.getElementById("celebrateButton").addEventListener("click", () => {
     origin: { y: 0.6 }
   });
 });
+
+speechSynthesis.onvoiceschanged = () => {
+  const voices = speechSynthesis.getVoices();
+  voices.forEach((voice, i) => {
+    console.log(i + ": " + voice.name + " (" + voice.lang + ")");
+  });
+};
