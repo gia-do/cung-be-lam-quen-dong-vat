@@ -32,14 +32,22 @@ function getAnimalEmoji(animal) {
 function speakText(text) {
   const utterance = new SpeechSynthesisUtterance(text);
   const voices = speechSynthesis.getVoices();
-  const vietnameseVoice = voices.find(v => v.lang === "vi-VN");
+
+  // Try to find a Google Vietnamese voice
+  const vietnameseVoice = voices.find(v =>
+    v.lang === "vi-VN" && v.name.toLowerCase().includes("google")
+  );
+
   if (vietnameseVoice) {
     utterance.voice = vietnameseVoice;
   } else {
+    // fallback if no Google Vietnamese voice is found
     utterance.lang = "vi-VN";
   }
+
   speechSynthesis.speak(utterance);
 }
+
 
 function launchMultiConfetti(animalsRolled) {
   const colors = animalsRolled.flatMap(animal => animalColors[animal] || []);
