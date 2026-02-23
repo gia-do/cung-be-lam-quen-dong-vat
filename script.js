@@ -30,7 +30,7 @@ function getAnimalEmoji(animal) {
 
 function speakText(text) {
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "en-US"; // change to "vi-VN" for Vietnamese
+  utterance.lang = "vi-VN"; // change to "vi-VN" for Vietnamese
   speechSynthesis.speak(utterance);
 }
 
