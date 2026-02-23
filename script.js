@@ -2,7 +2,7 @@ const diceElements = document.querySelectorAll(".die");
 const resultDisplay = document.getElementById("result");
 
 // Animal mapping
-const animals = ["Shrimp", "Crab", "Fish", "Pig", "Chicken", "Giraffe"];
+const animals = ["Tôm", "Cua", "Cá", "Lợn", "Gà", "Hươu Sao"];
 const animalEmojis = {
   Shrimp: "🦐",
   Crab: "🦀",
