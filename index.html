@@ -2,33 +2,20 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Cùng Bé Làm Quen Động Vật</title>
+  <title>Animal Dice Game</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Cùng Bé Làm Quen Động Vật</h1>
-
+  <h1>Animal Dice Game</h1>
   <div id="dice-container">
     <div class="die">🎲</div>
     <div class="die">🎲</div>
     <div class="die">🎲</div>
   </div>
-
   <button id="rollButton">Xóc</button>
   <button id="celebrateButton">Chúc mừng!</button>
-
-  <h2>Danh sách Chúc mừng</h2>
-  <textarea id="congratsList" rows="6" cols="40">
-Giỏi quá!
-Tuyệt vời!
-Chúc mừng!
-Con làm rất tốt!
-Xuất sắc!
-Con thông minh quá!
-  </textarea>
-
-  <div id="result">Kết quả:</div>
-
+  <textarea id="congratsList" placeholder="Nhập lời chúc, mỗi dòng một câu"></textarea>
+  <div id="result">Kết quả: </div>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
 </body>
