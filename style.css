@@ -1,0 +1,38 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #fdf6e3;
+  color: #333;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  background: #f5deb3;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #deb887;
+}
+
+.die {
+  font-size: 50px;
+  display: inline-block;
+  margin: 10px;
+}
+
+.rolling {
+  animation: shake 0.5s infinite;
+}
+
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(10deg); }
+  50% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
