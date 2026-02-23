@@ -41,7 +41,7 @@ async function getVietnameseTTS(text) {
       if (data.audioContent) {
         const audio = new Audio("data:audio/mp3;base64," + data.audioContent);
         audio.onended = () => {
-          setTimeout(resolve, 1000); // short pause after each voice
+          setTimeout(resolve, 700); // short pause after each voice
         };
         audio.play();
       } else {
