@@ -1,23 +1,23 @@
 const diceElements = document.querySelectorAll(".die");
 const resultDisplay = document.getElementById("result");
 
-// Animal mapping
-const animals = ["Tôm", "Cua", "Cá", "Lợn", "Gà", "Hươu Sao"];
+// Động vật bằng tiếng Việt
+const animals = ["Tôm", "Cua", "Cá", "Lợn", "Gà", "Hươu sao"];
 const animalEmojis = {
-  Shrimp: "🦐",
-  Crab: "🦀",
-  Fish: "🐟",
-  Pig: "🐖",
-  Chicken: "🐓",
-  Giraffe: "🦒"
+  Tôm: "🦐",
+  Cua: "🦀",
+  Cá: "🐟",
+  Lợn: "🐖",
+  Gà: "🐓",
+  Hươu sao: "🦒"
 };
 const animalColors = {
-  Shrimp: ['#ff69b4', '#ffb6c1'],
-  Crab: ['#ff0000', '#ff4500'],
-  Fish: ['#1e90ff', '#00ced1'],
-  Pig: ['#ffc0cb', '#ff69b4'],
-  Chicken: ['#ffff00', '#ffd700'],
-  Giraffe: ['#daa520', '#f4a460']
+  Tôm: ['#ff69b4', '#ffb6c1'],
+  Cua: ['#ff0000', '#ff4500'],
+  Cá: ['#1e90ff', '#00ced1'],
+  Lợn: ['#ffc0cb', '#ff69b4'],
+  Gà: ['#ffff00', '#ffd700'],
+  Hươu sao: ['#daa520', '#f4a460']
 };
 
 function rollDie() {
@@ -28,9 +28,16 @@ function getAnimalEmoji(animal) {
   return animalEmojis[animal] || "🎲";
 }
 
+// Đọc bằng giọng tiếng Việt (Google TTS nếu có)
 function speakText(text) {
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "vi-VN"; // change to "vi-VN" for Vietnamese
+  const voices = speechSynthesis.getVoices();
+  const vietnameseVoice = voices.find(v => v.lang === "vi-VN");
+  if (vietnameseVoice) {
+    utterance.voice = vietnameseVoice;
+  } else {
+    utterance.lang = "vi-VN";
+  }
   speechSynthesis.speak(utterance);
 }
 
@@ -44,7 +51,7 @@ function launchMultiConfetti(animalsRolled) {
   });
 }
 
-// Roll button logic
+// Nút Xóc
 document.getElementById("rollButton").addEventListener("click", () => {
   diceElements.forEach(die => {
     die.textContent = "🎲";
@@ -60,12 +67,12 @@ document.getElementById("rollButton").addEventListener("click", () => {
       speakText(animal);
       die.classList.remove("rolling");
     });
-    resultDisplay.textContent = "Result: " + rolledAnimals.join(", ");
+    resultDisplay.textContent = "Kết quả: " + rolledAnimals.join(", ");
     launchMultiConfetti(rolledAnimals);
   }, 6000);
 });
 
-// Celebrate button logic
+// Nút Chúc mừng
 document.getElementById("celebrateButton").addEventListener("click", () => {
   const listText = document.getElementById("congratsList").value;
   const congratulationsList = listText.split("\n").filter(line => line.trim() !== "");
